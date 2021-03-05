@@ -2,6 +2,7 @@ import React from 'react';
 
 import SingUpp from './components/SingUpp';
 import NewMessage from './components/NewMessage';
+import Messages from './components/Messages';
 
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import firebase from 'firebase/app';
@@ -56,7 +57,11 @@ class App extends React.Component {
             <Router>
                 <Route exact path="/">
                     <div>
-                        {this.state.authenticated ? <NewMessage authentication={this.onAuthentication} /> :
+                        {this.state.authenticated ?
+                            <div>
+                                <Messages />
+                                <NewMessage authentication={this.onAuthentication} />
+                            </div> :
                             <SingUpp authentication={this.onAuthentication} />}
                     </div>
                 </Route>
