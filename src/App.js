@@ -3,6 +3,8 @@ import React from 'react';
 import SingUpp from './components/SingUpp';
 import NewMessage from './components/NewMessage';
 import Messages from './components/Messages';
+import Menu from './components/Menu';
+import Users from './components/Users';
 
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import firebase from 'firebase/app';
@@ -13,14 +15,16 @@ import RequestNewPassword from './components/RequestNewPassword';
 
 class App extends React.Component {
     state = {
-        authenticated: false
+        authenticated: false,
+        avatars: [],
+        newUser: []
     };
 
 
     componentDidMount = () => {
 
         const logBagIn = () => {
-            this.setState({ authenticated: true })
+            this.onAuthentication(true)
         };
 
         const logUserOut = () => {
@@ -37,6 +41,15 @@ class App extends React.Component {
             }
         });
 
+
+    };
+
+    setAvatars = (e) => {
+        this.setState({ avatars: e })
+    };
+
+    setNewUser = (e) => {
+        this.setState({ newUser: e })
     };
 
 
@@ -59,8 +72,11 @@ class App extends React.Component {
                     <div>
                         {this.state.authenticated ?
                             <div>
-                                <Messages />
+                                <Messages setAvatars={this.setAvatars} />
                                 <NewMessage authentication={this.onAuthentication} />
+                                <br />
+                                <Menu setNewUser={this.setNewUser} />
+
                             </div> :
                             <SingUpp authentication={this.onAuthentication} />}
                     </div>

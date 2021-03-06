@@ -23,8 +23,6 @@ const NewMessage = (props) => {
         if (text === '') {
             return
         } else {
-            console.log(text)
-
             const { uid, photoURL } = auth.currentUser;
             const messagesRef = firebase.firestore().collection('messages');
 
@@ -42,6 +40,8 @@ const NewMessage = (props) => {
         // Close mobile devises keyboard after submit
         // document.activeElement.blur();
     };
+
+    //console.log(auth.currentUser)
 
     const togleInput = window.matchMedia("(max-width: 768px)")
 
@@ -69,23 +69,7 @@ const NewMessage = (props) => {
             </div>
         )
     }
-    /*
-    
-        return (
-            <div>
-                <h1>Tervettuloa chattiin!</h1><button onClick={singOut}>Kirjaudu ulos</button><br /><br />
-                <form onSubmit={sendMessage}>
-                    <p>Kännykkä:</p>
-                    <textarea rows="3" cols="30" type="text" value={text} onChange={(e) => setText(e.target.value)} />
-                    <button onClick={sendMessage}>Send</button>
-                    <br />
-                    <p>Tietokone</p>
-                    <input type="text" value={text} onChange={(e) => setText(e.target.value)} />
-                </form>
-    
-            </div>
-        )
-        */
+
 }
 
 
