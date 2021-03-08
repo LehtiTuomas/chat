@@ -9,11 +9,21 @@ const NewMessage = (props) => {
     const [text, setText] = useState('')
 
     const singOut = () => {
+        //setUserOffline();
         auth.signOut().then(() => {
             props.authentication(false)
         });
 
     };
+
+    const setUserOffline = async () => {
+        const { uid } = auth.currentUser;
+        const onlineRef = firebase.firestore().collection('onlineUsers');
+
+        await onlineRef.doc(uid).set({
+            online: false,
+        }, { merge: true });
+    }
 
     const sendMessage = async (event) => {
         // Prevent default form action

@@ -1,3 +1,5 @@
+import './RequestNewPassword-styles.css'
+
 import React, { useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 
@@ -35,15 +37,18 @@ const RequestNewPassword = () => {
 
     return (
         redirect ? <Redirect to="/" /> :
-            <div>
-                <h2>Vaihda salasana</h2>
-                <p>Kirjoita alla olevaan kenttään sähköpostiosoitteesi ja paina lähetä.<br />
-            Saat hetken kuluttua sähköpostiisi linkin salasanan vaihtamiseksi.</p>
-                <input placeholder="Email" name="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)}></input>
-                <button onClick={Send}>Lähetä</button>
-                <br /><br />
-                <div>{Text()}</div>
-                <p style={{ color: 'red' }}>{Error}</p>
+            <div className="container">
+                <div className="box">
+                    <h2>Vaihda salasana</h2>
+                    <p>Kirjoita alla olevaan kenttään sähköpostiosoitteesi ja paina lähetä.<br />
+                    Saat hetken kuluttua sähköpostiisi linkin salasanan vaihtamiseksi.</p>
+                    <input className="input-field" placeholder="Sähköposti" name="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)}></input>
+                    <br />
+                    <div className="button-send" onClick={Send}>Lähetä</div>
+                    <br /><br />
+                    <div>{Text()}</div>
+                    <p style={{ color: 'red' }}>{Error}</p>
+                </div>
             </div>
     )
 }

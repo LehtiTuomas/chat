@@ -8,7 +8,7 @@ import { useCollectionData } from 'react-firebase-hooks/firestore';
 const Messages = () => {
 
     const messagesRef = firebase.firestore().collection('messages');
-    const query = messagesRef.orderBy('createdAt').limitToLast(25);
+    const query = messagesRef.orderBy('createdAt');
     const [messages] = useCollectionData(query, { idField: 'id' });
 
     /*

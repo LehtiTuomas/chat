@@ -1,3 +1,5 @@
+import './SingUpp.styles.css'
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -58,23 +60,29 @@ const SingUpp = (props) => {
     return (
         <div>
 
-            <div>
-                <h1>Kirjaudu keskusteluun</h1>
-                <p>Täytä alla olevat kohdat luodaksesi uuden tilin tai kirjautuaksesi sisään.</p>
-                <div>
-                    <input placeholder="Email" name="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)}></input>
+            <div className="container">
+                <div className="login">
+                    <h1>Kirjaudu</h1>
+                    <p>Täytä alla olevat kohdat luodaksesi uuden tilin tai kirjautuaksesi sisään.</p>
+                    <div>
+                        <input className="input-field" placeholder="Sähköposti" name="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)}></input>
+                    </div>
+                    <br />
+                    <div>
+                        <input placeholder="Salasana" className="input-field" name="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)}></input>
+                    </div>
+                    <br />
+                    <span className="button-login" onClick={signInWithEmail}>Kirjaudu</span>  <span className="button-makeAccount" onClick={createNewAccount}>Luo tili</span>
+                    <br /><br />
+                    <Link to="/Request-password">Unohtuiko salasana?</Link>
+
+
+                    {/*
+                    <h4>Kirjaudu Google tililläsi:</h4>
+                    <button onClick={signInWithGoogle}>Google kirjautuminen</button>
+                    */}
+                    <p style={{ color: 'red' }}>{message}</p>
                 </div>
-                <br />
-                <div>
-                    <input placeholder="Salasana" name="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)}></input>
-                </div>
-                <br />
-                <button onClick={signInWithEmail}>Kirjaudu</button>  <button onClick={createNewAccount}>Luo tili</button>
-                <br /><br />
-                <Link to="/Request-password">Unohtuiko salasana?</Link>
-                <h4>Kirjaudu Google tililläsi:</h4>
-                <button onClick={signInWithGoogle}>Google kirjautuminen</button>
-                <p style={{ color: 'red' }}>{message}</p>
             </div>
         </div>
     );

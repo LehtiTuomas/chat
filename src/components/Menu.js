@@ -23,8 +23,8 @@ const Menu = (props) => {
     const [userName] = useCollectionData(query);
     const users = userName
 
-    console.log(users, 'users')
-    console.log(props.avatars, 'AVATARS!!')
+    // console.log(users, 'users')
+    // console.log(props.avatars, 'AVATARS!!')
 
     useEffect(() => {
 
@@ -52,7 +52,7 @@ const Menu = (props) => {
 
 
 
-    console.log(alias, 'Alias')
+    // console.log(alias, 'Alias')
 
 
     /*
@@ -116,11 +116,27 @@ const Menu = (props) => {
             // get all user names from firebase
             const nameRef = firebase.firestore().collection('userName');
 
+            // referense to set new dataplace for determining if user is online or not
+            const onlineRef = firebase.firestore().collection('onlineUsers');
+
             // sent new user name to firebase
             await nameRef.add({
                 text: name,
                 uid
             })
+
+            // set APP avatarOk state to true
+            props.setAvatarOk()
+
+            // sent user id to firebase databse and set it to true
+            await onlineRef.doc(uid).set({
+                online: true,
+            });
+
+
+
+
+
         }
 
 
