@@ -23,7 +23,8 @@ const Menu = (props) => {
     const [userName] = useCollectionData(query);
     const users = userName
 
-    console.log(users)
+    console.log(users, 'users')
+    console.log(props.avatars, 'AVATARS!!')
 
     useEffect(() => {
 
@@ -97,11 +98,10 @@ const Menu = (props) => {
         event.preventDefault()
 
         const isNameOk = () => {
+            // Check if the name is allready in use
             const allUsers = users.map(e => e.text);
             const nameIsOk = allUsers.includes(name) // true if name founds or false if not
-            console.log(allUsers)
-            console.log(nameIsOk)
-            console.log(name)
+
             return nameIsOk
         }
 
@@ -133,6 +133,7 @@ const Menu = (props) => {
     return (
         <div>
             <form onSubmit={newUserName}>
+                <p>Osallistuaksesi keskusteluun sinun täytyy luoda käyttäjänimi. Huomaa, että nimen voi luoda vain kerran, eikä sitä voi jälkeenpäin enää muuttaa.</p>
                 <label htmlFor="name">Nimi:</label><br />
                 <input type="text" name="name" value={name} onChange={(e) => setName(e.target.value)} />
                 <button onClick={newUserName}>Tallenna nimi</button>

@@ -17,13 +17,32 @@ class App extends React.Component {
     state = {
         authenticated: false,
         avatars: [],
-        newUser: []
+        newUser: [],
+        avatarOk: false
     };
 
+
+    aliasOk = () => {
+        // check if the user has alias name
+        let userArray = []
+        userArray.push(this.state.avatars)
+        const allUsersID = userArray.map(e => e.uid);
+
+        const { uid } = auth.currentUser; // user id from firebase
+
+        const aliasIsOk = allUsersID.includes(uid) // true if id found, false if not
+
+        this.setState({ avatarOk: aliasIsOk })
+
+        console.log(aliasIsOk, 'alias ok')
+
+
+    }
 
     componentDidMount = () => {
 
         const logBagIn = () => {
+            console.log(this.state.avatars)
             this.onAuthentication(true)
         };
 
@@ -39,6 +58,24 @@ class App extends React.Component {
                 // No user is signed in.
                 logUserOut()
             }
+        });
+
+
+        const nameRef = firebase.firestore().collection('userName');
+        nameRef.get().then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                // doc.data() is never undefined for query doc snapshots
+                console.log(doc.data());
+                const data = doc.data()
+                this.setState({ avatars: data })
+                //console.log(testi, 'testitestinen')
+
+                //const allUsersID = this.state.avatars.map(e => e.uid);
+                //console.log(allUsersID)
+
+                this.aliasOk()
+
+            });
         });
 
 
@@ -72,11 +109,16 @@ class App extends React.Component {
                     <div>
                         {this.state.authenticated ?
                             <div>
-                                <Messages setAvatars={this.setAvatars} />
-                                <NewMessage authentication={this.onAuthentication} />
-                                <br />
-                                <Menu setNewUser={this.setNewUser} />
-
+                                {this.state.avatarOk ?
+                                    <div>
+                                        <Messages setAvatars={this.setAvatars} />
+                                        <NewMessage authentication={this.onAuthentication} />
+                                        <br />
+                                    </div> :
+                                    <div>
+                                        <Menu setNewUser={this.setNewUser} avatara={this.state.avatars} />
+                                    </div>
+                                }
                             </div> :
                             <SingUpp authentication={this.onAuthentication} />}
                     </div>

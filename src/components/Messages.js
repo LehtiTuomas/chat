@@ -61,8 +61,8 @@ const ChatMessage = (props) => {
 
     return (<>
         <div className={`message ${messageClass}`}>
-            <p>{aliasName()}</p>
-            <img alt="" src={photoURL} />
+            <p style={{ color: 'red' }}>{aliasName()}</p>
+            {/*<img alt="" src={photoURL} />*/}
             <p>{text}</p>
         </div>
     </>)
