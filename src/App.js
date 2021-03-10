@@ -1,9 +1,11 @@
+import './App-styles.css';
 import React from 'react';
 
 import SingUpp from './components/SingUpp';
 import NewMessage from './components/NewMessage';
 import Messages from './components/Messages';
 import Menu from './components/Menu';
+import LogOutUser from './components/LogOutUser';
 import Users from './components/Users';
 import GetOnlineUsers from './components/GetOnlineUsers';
 
@@ -20,7 +22,7 @@ class App extends React.Component {
         testi: [],
         avatars: [],
         newUser: [],
-        avatarOk: false
+        avatarOk: false,
     };
 
 
@@ -43,6 +45,7 @@ class App extends React.Component {
         console.log(aliasIsOk, 'alias ok')
 
         console.log()
+        this.printUsers()
 
 
         //Update firebase that user is online
@@ -56,6 +59,15 @@ class App extends React.Component {
         }, { merge: true });
 
     }
+
+    printUsers = () => {
+        // Take all the current user name from state 
+        const users = this.state.avatars.map(e => e.text)
+
+        return users.map((item, i) => <div key={i}>{item}</div>)
+
+    };
+
 
 
     componentDidMount = () => {
@@ -138,10 +150,19 @@ class App extends React.Component {
                         {this.state.authenticated ?
                             <div>
                                 {this.state.avatarOk ?
-                                    <div>
-                                        <Messages setAvatars={this.setAvatars} />
+                                    <div className="app-container">
+                                        <div className="logOutNow" >
+                                            <LogOutUser authentication={this.onAuthentication} />
+                                        </div>
+                                        <div className="message-container">
+                                            <Messages setAvatars={this.setAvatars} />
+                                        </div>
+                                        <div className="users">
+                                            <h3>Käyttäjät:</h3>
+                                            <div>{this.printUsers()}</div>
+                                        </div>
                                         <NewMessage authentication={this.onAuthentication} />
-                                        <br />
+
                                     </div> :
                                     <div>
                                         <Menu setNewUser={this.setNewUser} avatar={this.state.avatars} setAvatarOk={this.setAvatarOk} />

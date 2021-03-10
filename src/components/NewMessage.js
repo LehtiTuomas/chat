@@ -1,3 +1,4 @@
+import './NewMessage-styles.css'
 import React, { useState } from 'react';
 
 import firebase from 'firebase/app';
@@ -8,26 +9,19 @@ const NewMessage = (props) => {
 
     const [text, setText] = useState('')
 
-    const singOut = () => {
-        //setUserOffline();
-        auth.signOut().then(() => {
-            props.authentication(false)
-        });
 
+
+    const enterPressed = (event) => {
+        if (event.keyCode === 13) {
+            sendMessage();
+        }
     };
 
-    const setUserOffline = async () => {
-        const { uid } = auth.currentUser;
-        const onlineRef = firebase.firestore().collection('onlineUsers');
 
-        await onlineRef.doc(uid).set({
-            online: false,
-        }, { merge: true });
-    }
 
     const sendMessage = async (event) => {
         // Prevent default form action
-        event.preventDefault();
+        //event.preventDefault();
 
         // Send text to server
         if (text === '') {
@@ -58,7 +52,6 @@ const NewMessage = (props) => {
     if (togleInput.matches) { // if phone or tablet
         return (
             <div>
-                <button onClick={singOut}>Kirjaudu ulos</button><br /><br />
                 <form onSubmit={sendMessage}>
                     <p>Kännykkä:</p>
                     <textarea rows="3" cols="30" type="text" value={text} onChange={(e) => setText(e.target.value)} />
@@ -69,14 +62,14 @@ const NewMessage = (props) => {
         )
     } else {
         return (
-            <div>
-                <button onClick={singOut}>Kirjaudu ulos</button><br /><br />
-                <form onSubmit={sendMessage}>
-                    <p>Tietokone</p>
-                    <input type="text" value={text} onChange={(e) => setText(e.target.value)} />
-                </form>
 
+            <div className="container-send">
+                {/*<button onClick={singOut}>Kirjaudu ulos</button><br /><br />*/}
+                <form className="sendMessage-form" onSubmit={sendMessage}>
+                    <textarea rows="2" placeholder="Kirjoita jotain..." className="sendMessage-input" type="text" value={text} onChange={(e) => setText(e.target.value)} onKeyDown={(e) => enterPressed(e)} />
+                </form>
             </div>
+
         )
     }
 

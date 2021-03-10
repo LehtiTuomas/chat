@@ -1,0 +1,81 @@
+body,
+html {
+    margin: 0
+}
+
+.app-container {
+    display: grid;
+    grid-template-columns: 15% 60% auto;
+    grid-template-rows: auto auto;
+
+
+    /*justify-content: center;
+    flex-direction: column;*/
+    height: 100vh;
+}
+
+.message-container {
+    /*display: flex;*/
+    font-family: 'Montserrat',
+        sans-serif;
+    grid-column-end: 3;
+    background-color: white;
+    border-color: #CCCCCC;
+    box-shadow: 0px 0px 9px rgba(66, 66, 66, .75);
+    width: 90%;
+    max-width: 50em;
+    height: 80vh;
+    border-style: solid;
+    /*border-radius: 20px 0px 0px 20px;*/
+    margin-top: 1em;
+
+    padding: 10px;
+    overflow: auto;
+
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.users {
+    grid-column-start: 3;
+    grid-row-start: 1;
+    font-family: 'Montserrat',
+        sans-serif;
+    line-height: 1.6;
+    background-color: #6ddccf;
+    border-color: #CCCCCC;
+    box-shadow: 0px 0px 9px rgba(66, 66, 66, .75);
+    width: 50%;
+    max-width: 50em;
+    min-width: 150px;
+    height: 70vh;
+    border-style: solid;
+    /*border-radius: 20px;*/
+    margin-top: 1em;
+    padding: 10px;
+    overflow: auto;
+}
+
+.logOutNow {
+    grid-column-start: 3;
+    grid-row-start: 1;
+}

@@ -1,0 +1,31 @@
+.messagesent {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+
+}
+
+.messagereceived {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+
+}
+
+.message-background-sent {
+    max-width: 60%;
+    margin-top: 10px;
+    background-color: #ffefa1;
+    padding: 5px 30px 10px 30px;
+    border-radius: 70px;
+
+}
+
+.message-background-received {
+    max-width: 60%;
+    margin-top: 10px;
+    background-color: #ffcb91;
+    padding: 5px 30px 10px 30px;
+    border-radius: 70px;
+
+}

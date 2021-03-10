@@ -1,4 +1,5 @@
-import React from 'react';
+import './Messages-style.css';
+import React, { useEffect, useRef } from 'react';
 
 import firebase from 'firebase/app';
 import 'firebase/auth'
@@ -11,17 +12,36 @@ const Messages = () => {
     const query = messagesRef.orderBy('createdAt');
     const [messages] = useCollectionData(query, { idField: 'id' });
 
-    /*
-    const nameRef = firebase.firestore().collection('userName');
-    const search = nameRef
-    const [userName] = useCollectionData(search);
-    */
+
+    // Scroll messagebar to down after receaving or sent message
+    const dummy = useRef();
+
+    useEffect(() => {
+        dummy.current.scrollIntoView();
+    }, [messages])
+
+    const onScroll = () => {
+        console.log('scrolling')
+        /*
+        if (dummy.current) {
+            const { scrollTop, scrollHeight, clientHeight } = dummy.current;
+            if (scrollTop + clientHeight === scrollHeight) {
+                // TO SOMETHING HERE
+                console.log('Reached bottom')
+            }*/
+    };
+
 
 
     return (<>
         <main>
-            {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
-        </main>
+            <div className="onScroll" onScroll={onScroll}>
+                {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
+                {/*<div onScroll={() => onScroll()} ref={dummy}></div>*/}
+            </div>
+            <div ref={dummy} ></div>
+
+        </main >
 
     </>)
 }
@@ -29,7 +49,7 @@ const Messages = () => {
 
 
 const ChatMessage = (props) => {
-    const { text, uid, photoURL } = props.message;
+    const { text, uid } = props.message;
 
 
     // get all user names and userID's from firebase
@@ -59,13 +79,15 @@ const ChatMessage = (props) => {
 
     const messageClass = uid === auth.currentUser.uid ? 'sent' : 'received';
 
-    return (<>
-        <div className={`message ${messageClass}`}>
-            <p style={{ color: 'red' }}>{aliasName()}</p>
-            {/*<img alt="" src={photoURL} />*/}
-            <p>{text}</p>
-        </div>
-    </>)
+    return (
+        <div className={`message${messageClass}`}>
+            <div className={`message-background-${messageClass}`} >
+                <p style={{ color: '#379187', fontSize: '12px' }}>{aliasName()}</p>
+
+                <p>{text}</p>
+            </div >
+        </div >
+    )
 }
 
 
