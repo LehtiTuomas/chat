@@ -45,6 +45,7 @@ const SingUpp = (props) => {
         //  Sign in with email and password
         auth.signInWithEmailAndPassword(email, password)
             .then((userCredential) => {
+                props.setAvatars(false)
                 props.authentication(true)
                 // Signed in
                 //let user = userCredential.user;

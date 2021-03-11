@@ -23,6 +23,7 @@ class App extends React.Component {
         avatars: [],
         newUser: [],
         avatarOk: false,
+        bottom: true
     };
 
 
@@ -42,12 +43,12 @@ class App extends React.Component {
 
         this.setState({ avatarOk: aliasIsOk })
 
-        console.log(aliasIsOk, 'alias ok')
+        //console.log(aliasIsOk, 'alias ok')
 
         console.log()
         this.printUsers()
 
-
+        /*
         //Update firebase that user is online
         const onlineRef = firebase.firestore().collection('onlineUsers');
 
@@ -57,20 +58,23 @@ class App extends React.Component {
         await onlineRef.doc(uid).set({
             online: true,
         }, { merge: true });
+        */
 
     }
 
     printUsers = () => {
         // Take all the current user name from state 
-        const users = this.state.avatars.map(e => e.text)
+        //const users = this.state.avatars.map(e => e.text)
 
-        return users.map((item, i) => <div key={i}>{item}</div>)
+        //return users.map((item, i) => <div key={i}>{item}</div>)
 
     };
 
 
 
+
     componentDidMount = () => {
+
 
         const logBagIn = () => {
             // console.log(this.state.avatars)
@@ -116,6 +120,16 @@ class App extends React.Component {
         //this.setState({ avatars: allUsers })
     };
 
+    handleScroll = (e) => {
+        //console.log(this.state.avatarOk)
+        const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
+        if (bottom) {
+            this.setState({ bottom: true })
+        } else {
+            this.setState({ bottom: false })
+        }
+    };
+
 
     setAvatars = (e) => {
         this.setState({ avatars: e })
@@ -137,8 +151,8 @@ class App extends React.Component {
 
     };
 
-    setAvatarOk = () => {
-        this.setState({ avatarOk: true })
+    setAvatarOk = (e) => {
+        this.setState({ avatarOk: e })
     };
 
 
@@ -154,8 +168,8 @@ class App extends React.Component {
                                         <div className="logOutNow" >
                                             <LogOutUser authentication={this.onAuthentication} />
                                         </div>
-                                        <div className="message-container">
-                                            <Messages setAvatars={this.setAvatars} />
+                                        <div className="message-container" onScroll={this.handleScroll}>
+                                            <Messages setAvatars={this.setAvatars} bottom={this.state.bottom} />
                                         </div>
                                         <div className="users">
                                             <h3>Käyttäjät:</h3>
@@ -169,7 +183,7 @@ class App extends React.Component {
                                     </div>
                                 }
                             </div> :
-                            <SingUpp authentication={this.onAuthentication} />}
+                            <SingUpp authentication={this.onAuthentication} setAvatars={this.setAvatars} />}
                     </div>
                 </Route>
                 <Route path="/Request-password"><RequestNewPassword /></Route>

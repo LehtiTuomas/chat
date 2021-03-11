@@ -27,14 +27,14 @@ const NewMessage = (props) => {
         if (text === '') {
             return
         } else {
-            const { uid, photoURL } = auth.currentUser;
+            const { uid } = auth.currentUser;
             const messagesRef = firebase.firestore().collection('messages');
 
             await messagesRef.add({
                 text: text,
                 createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                 uid,
-                photoURL
+                time: Date.now()
             })
         }
 

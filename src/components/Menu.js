@@ -1,3 +1,4 @@
+import './RequestNewPassword-styles.css';
 import React, { useState, useEffect } from 'react';
 
 import firebase from 'firebase/app';
@@ -11,7 +12,15 @@ const Menu = (props) => {
     const [name, setName] = useState('');
     const [newUser, setNewUser] = useState(true)
     const [alias, setAlias] = useState('Uusi käyttäjä');
+    const [message, setMessage] = useState('');
 
+    const singOut = () => {
+        // setUserOffline()
+        auth.signOut().then(() => {
+            //props.authentication(false)
+        });
+
+    };
 
     //let newUser = true // prevent users to make multiple alias names
     const { uid } = auth.currentUser; // user id from firebase
@@ -30,7 +39,7 @@ const Menu = (props) => {
 
 
         if (!users) {
-            console.log('Ei vielä käyttäjiä')
+            //console.log('Ei vielä käyttäjiä')
         } else {
             // search if user allready has alias name in firebase
             const allUsers = users.map(e => e.uid);
@@ -41,6 +50,7 @@ const Menu = (props) => {
                 const currentUser = users[currentUserIndex].text
                 setAlias(currentUser)
                 setNewUser(false)
+
             } else {
                 return
             }
@@ -52,55 +62,16 @@ const Menu = (props) => {
 
 
 
-    // console.log(alias, 'Alias')
 
-
-    /*
-    
-    
-    
-    
-    
-        if (!users) {
-            console.log('Loading...')
-        } else {
-            // search user name from users array
-    
-            // search if user allready has alias name in firebase
-            const allUsers = users.map(e => e.uid);
-            const userIs = allUsers.includes(uid) // true or false
-            newUser = userIs
-            //setNewUser(userIs)
-    
-    
-    
-            //const currentUserIndex = allUsers.indexOf(uid)
-    
-    
-            if (!userIs) {
-                //setAlias('Käyttäjä')
-                console.log('nimeä ei löydy')
-            } else {
-                const currentUserIndex = allUsers.indexOf(uid)
-                const currentUser = users[currentUserIndex].text
-                //setAlias(currentUser)
-                //let index = users.indexOf(uid);
-                console.log(currentUser)
-                //console.log('nimi löytyy')
-            }
-    
-    
-        }
-    
-    */
 
     const newUserName = async (event) => {
         event.preventDefault()
 
         const isNameOk = () => {
             // Check if the name is allready in use
-            const allUsers = users.map(e => e.text);
-            const nameIsOk = allUsers.includes(name) // true if name founds or false if not
+            const allUsers = users.map(e => e.text.toLowerCase());
+            const lowName = name.toLocaleLowerCase()
+            const nameIsOk = allUsers.includes(lowName) // true if name founds or false if not
 
             return nameIsOk
         }
@@ -111,13 +82,13 @@ const Menu = (props) => {
         if (name === '' || !newUser) {
             return
         } else if (isNameOk() === true) {
-            console.log('nimi on jo varattu')
+            setMessage('Nimi on jo käytössä')
         } else {
             // get all user names from firebase
             const nameRef = firebase.firestore().collection('userName');
 
             // referense to set new dataplace for determining if user is online or not
-            const onlineRef = firebase.firestore().collection('onlineUsers');
+            //const onlineRef = firebase.firestore().collection('onlineUsers');
 
             // sent new user name to firebase
             await nameRef.add({
@@ -126,12 +97,14 @@ const Menu = (props) => {
             })
 
             // set APP avatarOk state to true
-            props.setAvatarOk()
+            props.setAvatarOk(true)
 
-            // sent user id to firebase databse and set it to true
+            // sent user id to firebase database and set it to true
+            /*
             await onlineRef.doc(uid).set({
                 online: true,
             });
+            */
 
 
 
@@ -147,14 +120,20 @@ const Menu = (props) => {
 
 
     return (
-        <div>
-            <form onSubmit={newUserName}>
-                <p>Osallistuaksesi keskusteluun sinun täytyy luoda käyttäjänimi. Huomaa, että nimen voi luoda vain kerran, eikä sitä voi jälkeenpäin enää muuttaa.</p>
-                <label htmlFor="name">Nimi:</label><br />
-                <input type="text" name="name" value={name} onChange={(e) => setName(e.target.value)} />
-                <button onClick={newUserName}>Tallenna nimi</button>
-            </form>
+        <div className="container">
+            <div className="box">
+                <h2>Melkein valmista!</h2>
+                <form onSubmit={newUserName}>
+                    <p>Luo vielä käyttäjänimi, joka näkyy muille keskustelijoille.<br /><br /><span style={{ fontWeight: '600' }}>Nimen voi luoda vain kerran,</span><br />eikä sitä voi jälkeenpäin muuttaa.</p>
 
+                    <input className="input-field" placeholder="Nimimerkki" type="text" name="name" value={name} onChange={(e) => setName(e.target.value)} />
+                    <br />
+                    <p style={{ color: 'red' }}>{message}</p>
+
+                    <div className="button-send" onClick={newUserName}>Tallenna nimi</div>
+                    <div className="button-out" onClick={singOut}>Kirjaudu ulos</div>
+                </form>
+            </div>
         </div>
     )
 }

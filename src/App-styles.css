@@ -30,7 +30,8 @@ html {
     margin-top: 1em;
 
     padding: 10px;
-    overflow: auto;
+    overflow: scroll;
+    overflow-x: hidden;
 
 }
 
