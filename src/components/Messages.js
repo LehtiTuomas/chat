@@ -1,5 +1,5 @@
 import './Messages-style.css';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import firebase from 'firebase/app';
 import 'firebase/auth'
@@ -38,7 +38,7 @@ const Messages = (props) => {
 
 
 const ChatMessage = (props) => {
-    const { text, uid, createdAt, time } = props.message;
+    const { text, uid, time } = props.message;
 
 
     // get all user names and userID's from firebase

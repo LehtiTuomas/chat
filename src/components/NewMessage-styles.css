@@ -1,5 +1,5 @@
 .container-send {
-    grid-column-start: 2;
+    width: 70%;
 }
 
 
@@ -14,19 +14,13 @@
     background-color: #FFFFFF;
     color: #000000;
     border-style: solid;
-    /*border-radius: 23px;*/
     box-shadow: 0px 0px 9px rgba(66, 66, 66, .75);
     text-shadow: 0px 0px 0px rgba(66, 66, 66, .75);
     resize: vertical;
-
-
+    margin-top: 20px;
     width: 100%;
-    /*max-width: 50em;*/
-
-
-    /* margin-right: 20px;*/
-    /*flex-shrink: 0;*/
 }
+
 
 .sendMessage-input:focus {
     outline: none;
@@ -38,6 +32,36 @@ input[type=text],
 select,
 textarea {
     width: 70%;
-    max-width: 60em;
+}
+
+.container-send-phone {
+    width: 100%
+}
+
+.sendMessage-phone {
+    display: flex;
+    height: 100%;
+}
+
+.button-send-mobile {
+    background-color: #6ddccf;
+    width: 25%;
+    height: 100%;
+}
+
+.arrow {
+    width: 80%;
+    margin-left: 10px;
+}
+
+@media only screen and (max-width: 768px) {
+
+    input[type=text],
+    select,
+    textarea {
+        height: 93%;
+        width: 75%;
+
+    }
 
 }

@@ -6,8 +6,6 @@ import NewMessage from './components/NewMessage';
 import Messages from './components/Messages';
 import Menu from './components/Menu';
 import LogOutUser from './components/LogOutUser';
-import Users from './components/Users';
-import GetOnlineUsers from './components/GetOnlineUsers';
 
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import firebase from 'firebase/app';
@@ -19,7 +17,6 @@ import RequestNewPassword from './components/RequestNewPassword';
 class App extends React.Component {
     state = {
         authenticated: false,
-        testi: [],
         avatars: [],
         newUser: [],
         avatarOk: false,
@@ -30,55 +27,40 @@ class App extends React.Component {
 
     aliasOk = async () => {
         // check if the user has alias name
-        //let userArray = []
-        //userArray.push(this.state.avatars)
-        //const allUsersID = userArray.map(e => e.uid);
-
 
         const { uid } = auth.currentUser; // user id from firebase
         const allUsersID = this.state.avatars.map(e => e.uid);
-
 
         const aliasIsOk = allUsersID.includes(uid) // true if id found, false if not
 
         this.setState({ avatarOk: aliasIsOk })
 
-        //console.log(aliasIsOk, 'alias ok')
-
-        console.log()
-        this.printUsers()
-
-        /*
-        //Update firebase that user is online
-        const onlineRef = firebase.firestore().collection('onlineUsers');
-
-        console.log(this.state.avatars, ' all avatars')
-
-
-        await onlineRef.doc(uid).set({
-            online: true,
-        }, { merge: true });
-        */
 
     }
-
-    printUsers = () => {
-        // Take all the current user name from state 
-        //const users = this.state.avatars.map(e => e.text)
-
-        //return users.map((item, i) => <div key={i}>{item}</div>)
-
-    };
-
 
 
 
     componentDidMount = () => {
 
+        const nameRef = firebase.firestore().collection('userName');
+        nameRef.get().then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+
+                const data = doc.data()
+                allUsers.push(data)
+                this.setState({ avatars: allUsers })
+
+                this.aliasOk()
+
+            });
+
+        });
+
 
         const logBagIn = () => {
-            // console.log(this.state.avatars)
+
             this.onAuthentication(true)
+
         };
 
         const logUserOut = () => {
@@ -97,34 +79,13 @@ class App extends React.Component {
 
         let allUsers = []
 
-        const nameRef = firebase.firestore().collection('userName');
-        nameRef.get().then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-                // doc.data() is never undefined for query doc snapshots
-                //console.log(doc.data());
-                //let kokeilu = []
-                const data = doc.data()
-                allUsers.push(data)
-                this.setState({ avatars: allUsers })
-                //console.log(allUsers, 'testitestinen')
-
-                //const allUsersID = this.state.avatars.map(e => e.uid);
-                //console.log(allUsersID)
-
-                this.aliasOk()
-
-            });
-
-        });
-
-        //this.setState({ avatars: allUsers })
     };
 
     handleScroll = (e) => {
-        //console.log(this.state.avatarOk)
         const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
         if (bottom) {
             this.setState({ bottom: true })
+
         } else {
             this.setState({ bottom: false })
         }
@@ -156,7 +117,18 @@ class App extends React.Component {
     };
 
 
+
+
+
+    togleInput = () => {
+        const togleInput = window.matchMedia("(max-width: 768px)")
+        return togleInput.matches
+    }
+
+
+
     render() {
+
         return (
             <Router>
                 <Route exact path="/">
@@ -165,25 +137,28 @@ class App extends React.Component {
                             <div>
                                 {this.state.avatarOk ?
                                     <div className="app-container">
-                                        <div className="logOutNow" >
-                                            <LogOutUser authentication={this.onAuthentication} />
+                                        <div className="data-container">
+                                            <div className="logOutNow" >
+                                                <LogOutUser authentication={this.onAuthentication} />
+                                            </div>
                                         </div>
-                                        <div className="message-container" onScroll={this.handleScroll}>
-                                            <Messages setAvatars={this.setAvatars} bottom={this.state.bottom} />
+                                        <div className="data-container">
+                                            <div className="message-container" onScroll={this.handleScroll}>
+                                                <Messages setAvatars={this.setAvatars} bottom={this.state.bottom} />
+                                            </div>
                                         </div>
-                                        <div className="users">
-                                            <h3>Käyttäjät:</h3>
-                                            <div>{this.printUsers()}</div>
-                                        </div>
-                                        <NewMessage authentication={this.onAuthentication} />
 
+                                        <div className="data-container input">
+                                            <NewMessage authentication={this.onAuthentication} />
+
+                                        </div>
                                     </div> :
                                     <div>
                                         <Menu setNewUser={this.setNewUser} avatar={this.state.avatars} setAvatarOk={this.setAvatarOk} />
                                     </div>
                                 }
                             </div> :
-                            <SingUpp authentication={this.onAuthentication} setAvatars={this.setAvatars} />}
+                            <SingUpp authentication={this.onAuthentication} setAvatars={this.setAvatars} setAvatarOk={this.setAvatarOk} />}
                     </div>
                 </Route>
                 <Route path="/Request-password"><RequestNewPassword /></Route>

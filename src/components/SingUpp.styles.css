@@ -5,6 +5,8 @@ body {
     background-color: #94ebcd;
 }
 
+@media only screen and (max-width: 768px) {}
+
 .container {
     display: flex;
     justify-content: center;
@@ -48,7 +50,6 @@ body {
 
 
 .button-login {
-    /* box-shadow: 0px 10px 14px -4px #276873;*/
     font-family: 'Montserrat',
         sans-serif;
     background: linear-gradient(to bottom, #599bb3 5%, #408c99 100%);
@@ -77,7 +78,6 @@ body {
 }
 
 .button-makeAccount {
-    /*box-shadow: 0px 10px 14px -7px #276873;*/
     font-family: 'Montserrat',
         sans-serif;
     background: linear-gradient(to bottom, #f5f2f5 5%, #44c7db 100%);

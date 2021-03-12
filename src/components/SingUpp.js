@@ -4,26 +4,16 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import 'firebase/auth'
-import { auth, googleAuthProvider } from './FirebaseConfig';
-
-
-//import { useAuthState } from 'react-firebase-hooks/auth';
-//import { useCollectionData } from 'react-firebase-hooks/firestore';
+import { auth } from './FirebaseConfig';
+import 'firebase/auth'
 
 
 const SingUpp = (props) => {
 
-    // const [user] = useAuthState(auth);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
 
-
-    const signInWithGoogle = () => {
-        const provider = googleAuthProvider;
-        auth.signInWithPopup(provider)
-        props.authentication(true)
-    };
 
 
     const createNewAccount = () => {
@@ -32,8 +22,6 @@ const SingUpp = (props) => {
             .then((userCredential) => {
                 props.authentication(true)
                 // Signed in 
-                //let user = userCredential.user;
-                // ...
             })
             .catch((error) => {
                 let errorMessage = error.message;
@@ -47,8 +35,10 @@ const SingUpp = (props) => {
             .then((userCredential) => {
                 props.setAvatars(false)
                 props.authentication(true)
+                props.setUserInIfName()
+
                 // Signed in
-                //let user = userCredential.user;
+
             })
             .catch((error) => {
                 let errorMessage = error.message;
@@ -56,6 +46,8 @@ const SingUpp = (props) => {
             });
 
     };
+
+
 
 
     return (
@@ -76,12 +68,6 @@ const SingUpp = (props) => {
                     <span className="button-login" onClick={signInWithEmail}>Kirjaudu</span>  <span className="button-makeAccount" onClick={createNewAccount}>Luo tili</span>
                     <br /><br />
                     <Link to="/Request-password">Unohtuiko salasana?</Link>
-
-
-                    {/*
-                    <h4>Kirjaudu Google tililläsi:</h4>
-                    <button onClick={signInWithGoogle}>Google kirjautuminen</button>
-                    */}
                     <p style={{ color: 'red' }}>{message}</p>
                 </div>
             </div>
